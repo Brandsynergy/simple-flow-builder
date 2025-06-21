@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleFlow - Easy Automation Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 SimpleFlow</h1>
+            <p>Build automations using simple English</p>
+        </header>
+
+        <div class="workflow-container">
+            <div class="workflow-header">
+                <h2>Your Automation Steps</h2>
+                <button id="addStep" class="btn-primary">+ Add Step</button>
+            </div>
+
+            <div id="workflowSteps" class="workflow-steps">
+                <!-- Steps appear here -->
+            </div>
+
+            <div class="workflow-actions">
+                <button id="runWorkflow" class="btn-success">▶️ Run Automation</button>
+                <button id="clearWorkflow" class="btn-danger">🗑️ Clear All</button>
+            </div>
+        </div>
+
+        <div class="results-container">
+            <h3>Results</h3>
+            <div id="results" class="results-output">
+                <p class="placeholder">Results will show here when you run your automation...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
