@@ -110,7 +110,7 @@ app.post('/api/automation', async (req, res) => {
   } else {
     res.json({
       success: false,
-      message: '❌ Command not recognized. Use format: Add WhatsApp contact: Name, Phone, "Message"'
+      message: `❌ Sorry, I couldn't process that command. GPT-4 said: ${aiResponse}`
     });
   }
 });
@@ -131,7 +131,7 @@ app.listen(PORT, () => {
 async function processWithAI(text, task = "summarize") {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       messages: [
         {"role": "system", "content": `You are a helpful assistant that can ${task} text.`},
         {"role": "user", "content": text}
