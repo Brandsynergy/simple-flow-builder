@@ -106,7 +106,27 @@ app.post('/api/automation', async (req, res) => {
   console.log('AI understood:', aiResponse);
   // Parse WhatsApp contact command
   const whatsappMatch = command.match(/Add WhatsApp contact:\s*([^,]+),\s*([^,]+),\s*"([^"]+)"/);
-  
+  // Parse Email command 📧
+    const emailMatch = command.match(/send.*email.*to\s+(\S+).*subject.*?['"]([^'"]+)['"].*message.*?['"]([^'"]+)['"]/i);
+    
+    if (emailMatch) {
+      const [, to, subject, message] = emailMatch;
+      
+      try {
+        const emailResult = await sendEmail(to.trim(), subject.trim(), message.trim());
+        
+        if (emailResult === 'Email sent successfully!') {
+          res.json({
+            success: true,
+            message: `✅ Email sent to ${to}!`,
+            details: `Subject: ${subject}`
+          });
+          return;
+        }
+      } catch (error) {
+        console.log('Email execution error:', error);
+      }
+    }
   if (whatsappMatch) {
     const [, name, phone, message] = whatsappMatch;
     
