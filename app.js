@@ -77,7 +77,9 @@ app.post('/api/automation', async (req, res) => {
   const { command } = req.body;
   
   console.log('Processing command:', command);
-  
+  // Use GPT-4 to understand the command! 🧠
+  const aiResponse = await parseCommand(command);
+  console.log('AI understood:', aiResponse);
   // Parse WhatsApp contact command
   const whatsappMatch = command.match(/Add WhatsApp contact:\s*([^,]+),\s*([^,]+),\s*"([^"]+)"/);
   
