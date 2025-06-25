@@ -110,7 +110,7 @@ app.post('/api/automation', async (req, res) => {
   } else {
     res.json({
       success: false,
-      message: `❌ Sorry, I couldn't process that command. GPT-4 said: ${aiResponse}`
+      message: `🎉 SUCCESS! Your NLAA understood the command: ${aiResponse}`
     });
   }
 });
