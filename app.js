@@ -8,7 +8,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 // Email Setup 📧
-const emailTransporter = nodemailer.createTransporter({
+const emailTransporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER,
