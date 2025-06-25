@@ -39,16 +39,24 @@ async function parseCommand(userCommand) {
 
 // Send Email Function 📧
 async function sendEmail(to, subject, message) {
+  console.log('🔍 Email Debug - Starting sendEmail function');
+  console.log('📧 To:', to);
+  console.log('📝 Subject:', subject);
+  console.log('💬 Message:', message);
+  
   try {
-    await emailTransporter.sendMail({
+    console.log('📤 Attempting to send email...');
+    const info = await emailTransporter.sendMail({
       from: process.env.GMAIL_USER,
       to: to,
       subject: subject,
       text: message
     });
+    
+    console.log('✅ Email sent successfully!', info.messageId);
     return 'Email sent successfully!';
   } catch (error) {
-    console.log('Email error:', error);
+    console.error('❌ Email error:', error);
     return 'Failed to send email';
   }
 }
