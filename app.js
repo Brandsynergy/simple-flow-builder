@@ -6,6 +6,28 @@ const OpenAI = require('openai');
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
+
+// Smart Command Parser - The Brain! 🧠 (Using GPT-4!)
+async function parseCommand(userCommand) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{
+        role: "system",
+        content: "You are a helpful automation assistant. Parse user commands into simple actions. Return JSON with: trigger, actions array. Keep it simple."
+      }, {
+        role: "user", 
+        content: userCommand
+      }],
+      max_tokens: 200
+    });
+    
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.log('AI Error:', error);
+    return 'Sorry, I could not understand that command.';
+  }
+}
 const app = express();
 const PORT = process.env.PORT || 10000;
 
