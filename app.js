@@ -2,7 +2,10 @@ const express = require('express');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 const path = require('path');
-
+const OpenAI = require('openai');
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 const app = express();
 const PORT = process.env.PORT || 10000;
 
@@ -100,3 +103,19 @@ app.listen(PORT, () => {
   console.log('- GOOGLE_PRIVATE_KEY:', process.env.GOOGLE_PRIVATE_KEY ? '✅' : '❌');
   console.log('- GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID ? '✅' : '❌');
 });
+// OpenAI function to process text
+async function processWithAI(text, task = "summarize") {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {"role": "system", "content": `You are a helpful assistant that can ${task} text.`},
+        {"role": "user", "content": text}
+      ]
+    });
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.error('OpenAI Error:', error);
+    return 'Error processing with AI';
+  }
+}
