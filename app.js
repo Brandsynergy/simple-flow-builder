@@ -3,10 +3,18 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 const path = require('path');
 const OpenAI = require('openai');
+const nodemailer = require('nodemailer');
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
-
+// Email Setup 📧
+const emailTransporter = nodemailer.createTransporter({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD
+  }
+});
 // Smart Command Parser - The Brain! 🧠 (Using GPT-4!)
 async function parseCommand(userCommand) {
   try {
@@ -26,6 +34,22 @@ async function parseCommand(userCommand) {
   } catch (error) {
     console.log('AI Error:', error);
     return 'Sorry, I could not understand that command.';
+  }
+}
+
+// Send Email Function 📧
+async function sendEmail(to, subject, message) {
+  try {
+    await emailTransporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to: to,
+      subject: subject,
+      text: message
+    });
+    return 'Email sent successfully!';
+  } catch (error) {
+    console.log('Email error:', error);
+    return 'Failed to send email';
   }
 }
 const app = express();
