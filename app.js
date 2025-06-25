@@ -107,10 +107,10 @@ app.post('/api/automation', async (req, res) => {
   // Parse WhatsApp contact command
   const whatsappMatch = command.match(/Add WhatsApp contact:\s*([^,]+),\s*([^,]+),\s*"([^"]+)"/);
   // Parse Email command 📧
-    const emailMatch = command.match(/send.*email.*to\s+(\S+).*subject.*?['"]([^'"]+)['"].*message.*?['"]([^'"]+)['"]/i);
+    const emailMatch = command.match(/(send.*email|compose.*email).*to\s+(\S+).*subject.*?['"]([^'"]+)['"].*message.*?['"]([^'"]+)['"]/i);
     
     if (emailMatch) {
-      const [, to, subject, message] = emailMatch;
+      const [, , to, subject, message] = emailMatch;
       
       try {
         const emailResult = await sendEmail(to.trim(), subject.trim(), message.trim());
