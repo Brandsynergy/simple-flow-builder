@@ -23,7 +23,7 @@ const calendar = google.calendar('v3');
 const calendarAuth = new google.auth.GoogleAuth({
   credentials: {
     type: 'service_account',
-    project_id: process.env.GOOGLE_PROJECT_ID,
+    project_id: process.env.GOOGLE_CALENDAR_PROJECT_ID,
     private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
     private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -31,6 +31,34 @@ const calendarAuth = new google.auth.GoogleAuth({
   },
   scopes: ['https://www.googleapis.com/auth/calendar']
 });
+// Calendar Event Creation Function
+async function createCalendarEvent(eventDetails) {
+  try {
+    const event = {
+      summary: eventDetails.title,
+      description: eventDetails.description || '',
+      start: {
+        dateTime: eventDetails.startTime,
+        timeZone: 'America/New_York',
+      },
+      end: {
+        dateTime: eventDetails.endTime,
+        timeZone: 'America/New_York',
+      },
+    };
+
+    const result = await calendar.events.insert({
+      auth: calendarAuth,
+      calendarId: 'primary',
+      resource: event,
+    });
+
+    return result.data;
+  } catch (error) {
+    console.error('Calendar creation error:', error);
+    throw error;
+  }
+}
 // Smart Command Parser - The Brain! 🧠 (Using GPT-4!)
 async function parseCommand(userCommand) {
   try {
@@ -150,6 +178,27 @@ app.post('/api/automation', async (req, res) => {
       } catch (error) {
         console.log('Email execution error:', error);
       }
+    }
+  // Parse Calendar command 📅
+    const calendarMatch = command.match(/(schedule|create|add).*(meeting|appointment|event).*(on|at|for)\s+(.+)/i);
+    
+    if (calendarMatch) {
+        const eventTitle = calendarMatch[4] || 'New Event';
+        
+        try {
+            const eventDetails = {
+                title: eventTitle,
+                description: `Created by NLAA: ${command}`,
+                startTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+                endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+            };
+            
+            await createCalendarEvent(eventDetails);
+            return res.json({ success: true, message: `📅 Calendar event "${eventTitle}" created successfully!` });
+        } catch (error) {
+            console.error('Calendar error:', error);
+            return res.json({ success: false, message: 'Failed to create calendar event' });
+        }
     }
   if (whatsappMatch) {
     const [, name, phone, message] = whatsappMatch;
