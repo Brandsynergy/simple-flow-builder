@@ -49,7 +49,7 @@ async function createCalendarEvent(eventDetails) {
 
     const result = await calendar.events.insert({
       auth: calendarAuth,
-      calendarId: 'aeyeng2025@gmail.com',
+      calendarId: 'primary',
       resource: event,
     });
 
