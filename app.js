@@ -187,7 +187,7 @@ app.post('/api/automation', async (req, res) => {
     );
     
     if (calendarMatch) {
-        const eventTitle = aiResponse.actions[0].parameters.title || aiResponse.trigger || 'New Event';
+        const eventTitle = aiResponse.trigger || aiResponse.actions[0].parameters.title || 'New Event';
         
         try {
             const eventDetails = {
