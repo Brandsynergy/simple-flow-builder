@@ -187,6 +187,8 @@ app.post('/api/automation', async (req, res) => {
      aiResponse.actions[0].date || aiResponse.actions[0].time);
     
     if (calendarMatch) {
+      console.log("✅ Calendar match found!");
+      console.log("📅 Creating calendar event...");
         const eventTitle = aiResponse.trigger || aiResponse.actions[0].parameters.title || 'New Event';
         
         try {
@@ -215,7 +217,9 @@ app.post('/api/automation', async (req, res) => {
           success: true,
           message: `✅ Contact added successfully!\n\nName: ${name.trim()}\nPhone: ${phone.trim()}\nMessage: ${message.trim()}\n\nCheck your Google Sheet!`
         });
-      } else {
+      } else { console.log("❌ No calendar match found");
+    console.log("🔍 Checking trigger:", aiResponse.trigger);
+    console.log("🔍 Checking actions:", aiResponse.actions);
         res.json({
           success: false,
           message: '❌ Failed to add contact to Google Sheet. Check your environment variables.'
