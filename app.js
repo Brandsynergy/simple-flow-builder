@@ -156,6 +156,7 @@ app.post('/api/automation', async (req, res) => {
   // Use GPT-4 to understand the command! 🧠
   const aiResponse = await parseCommand(command);
   console.log('AI understood:', aiResponse);
+  console.log("🔍 About to check for calendar match...");
   // Parse WhatsApp contact command
   const whatsappMatch = command.match(/Add WhatsApp contact:\s*([^,]+),\s*([^,]+),\s*"([^"]+)"/);
   // Parse Email command 📧
