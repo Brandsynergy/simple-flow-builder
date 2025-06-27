@@ -183,9 +183,11 @@ app.post('/api/automation', async (req, res) => {
   // Parse Calendar command 📅
     const calendarMatch = (aiResponse.actions && aiResponse.actions.length > 0) && 
     (aiResponse.trigger.toLowerCase().includes('meeting') || 
-     aiResponse.trigger.toLowerCase().includes('appointment') || 
-     aiResponse.trigger.toLowerCase().includes('schedule') ||
-     aiResponse.actions[0].date || aiResponse.actions[0].time);
+    aiResponse.trigger.toLowerCase().includes('appointment') || 
+    aiResponse.trigger.toLowerCase().includes('schedule') ||
+    aiResponse.actions[0].action.toLowerCase().includes('event') ||
+    aiResponse.actions[0].action.toLowerCase().includes('create') ||
+    aiResponse.actions[0].parameters.date || aiResponse.actions[0].parameters.time);
     
     if (calendarMatch) {
       console.log("✅ Calendar match found!");
