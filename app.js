@@ -39,17 +39,17 @@ async function createCalendarEvent(eventDetails) {
       description: eventDetails.description || '',
       start: {
         dateTime: eventDetails.startTime,
-        timeZone: 'America/New_York',
+        timeZone: 'Europe/London',
       },
       end: {
         dateTime: eventDetails.endTime,
-        timeZone: 'America/New_York',
+        timeZone: 'Europe/London',
       },
     };
 
     const result = await calendar.events.insert({
       auth: calendarAuth,
-      calendarId: 'primary',
+      calendarId: 'aeyeng2025@gmail.com',
       resource: event,
     });
 
