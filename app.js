@@ -180,11 +180,11 @@ app.post('/api/automation', async (req, res) => {
       }
     }
   // Parse Calendar command 📅
-    const calendarMatch = aiResponse.actions && aiResponse.actions.some(action => 
-    action.action.toLowerCase().includes('meeting') || 
-    action.action.toLowerCase().includes('appointment') || 
-    action.action.toLowerCase().includes('schedule')
-    );
+    const calendarMatch = (aiResponse.actions && aiResponse.actions.length > 0) && 
+    (aiResponse.trigger.toLowerCase().includes('meeting') || 
+     aiResponse.trigger.toLowerCase().includes('appointment') || 
+     aiResponse.trigger.toLowerCase().includes('schedule') ||
+     aiResponse.actions[0].date || aiResponse.actions[0].time);
     
     if (calendarMatch) {
         const eventTitle = aiResponse.trigger || aiResponse.actions[0].parameters.title || 'New Event';
