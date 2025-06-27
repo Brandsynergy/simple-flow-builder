@@ -35,7 +35,7 @@ const calendarAuth = new google.auth.GoogleAuth({
 async function createCalendarEvent(eventDetails) {
   try {
     const event = {
-      summary: eventDetails.title,
+      summary: eventDetails.event,
       description: eventDetails.description || '',
       start: {
         dateTime: eventDetails.startTime,
