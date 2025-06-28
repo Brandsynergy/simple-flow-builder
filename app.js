@@ -194,27 +194,27 @@ if (typeof aiResponse === 'string') {
       }
     }
   // Parse Calendar command 📅
-    console.log("🔍 Checking trigger:", aiResponse?.trigger);
-    console.log("🔍 Checking actions:", aiResponse?.actions);
-if (aiResponse?.actions && aiResponse.actions.length > 0) {
-    console.log("🔍 Checking first action:", aiResponse.actions[0].action);
+    console.log("🔍 Checking trigger:", parsedResponse?.trigger);
+    console.log("🔍 Checking actions:", parsedResponse?.actions);
+if (aiparsedResponse?.actions && aiparsedResponse?.actions.length > 0) {
+    console.log("🔍 Checking first action:", aiparsedResponse.actions[0].action);
 } else {
     console.log("❌ No actions found or actions is undefined");
 }
-    const calendarMatch = (aiResponse.actions && aiResponse.actions.length > 0) && 
-   (aiResponse.trigger.toLowerCase().includes('meeting') || 
-    aiResponse.trigger.toLowerCase().includes('appointment') || 
-    aiResponse.trigger.toLowerCase().includes('schedule') ||
-    aiResponse.actions[0].action.toLowerCase().includes('event') ||
-    aiResponse.actions[0].action.toLowerCase().includes('create') ||
-    aiResponse.actions[0].action.toLowerCase().includes('meeting') ||
-   (aiResponse.actions[0].parameters && (aiResponse.actions[0].parameters.date || aiResponse.actions[0].parameters.time)) ||
-   (aiResponse.actions[0].details && (aiResponse.actions[0].details.date || aiResponse.actions[0].details.time)));
+    const calendarMatch = (aiparsedResponse.actions && aiparsedResponse.actions.length > 0) && 
+   (aiparsedResponse.trigger.toLowerCase().includes('meeting') || 
+    aiparsedResponse.trigger.toLowerCase().includes('appointment') || 
+    aiparsedResponse.trigger.toLowerCase().includes('schedule') ||
+    aiparsedResponse.actions[0].action.toLowerCase().includes('event') ||
+    aiparsedResponse.actions[0].action.toLowerCase().includes('create') ||
+    aiparsedResponse.actions[0].action.toLowerCase().includes('meeting') ||
+   (aiparsedResponse.actions[0].parameters && (aiparsedResponse.actions[0].parameters.date || aiparsedResponse.actions[0].parameters.time)) ||
+   (aiparsedResponse.actions[0].details && (aiparsedResponse.actions[0].details.date || aiparsedResponse.actions[0].details.time)));
     
     if (calendarMatch) {
       console.log("✅ Calendar match found!");
       console.log("📅 Creating calendar event...");
-        const eventTitle = aiResponse.trigger || aiResponse.actions[0].parameters.title || 'New Event';
+        const eventTitle = aiparsedResponse.actions[0].details || aiparsedResponse.actions[0].parameters.title || 'New Event';
         
         try {
             const eventDetails = {
