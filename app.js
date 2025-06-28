@@ -181,8 +181,13 @@ app.post('/api/automation', async (req, res) => {
       }
     }
   // Parse Calendar command 📅
-    console.log("🔍 Checking trigger:", aiResponse.trigger);
+    console.log("🔍 Checking trigger:", aiResponse?.trigger);
+    console.log("🔍 Checking actions:", aiResponse?.actions);
+if (aiResponse?.actions && aiResponse.actions.length > 0) {
     console.log("🔍 Checking first action:", aiResponse.actions[0].action);
+} else {
+    console.log("❌ No actions found or actions is undefined");
+}
     const calendarMatch = (aiResponse.actions && aiResponse.actions.length > 0) && 
    (aiResponse.trigger.toLowerCase().includes('meeting') || 
     aiResponse.trigger.toLowerCase().includes('appointment') || 
