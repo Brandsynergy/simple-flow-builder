@@ -156,6 +156,17 @@ app.post('/api/automation', async (req, res) => {
   // Use GPT-4 to understand the command! 🧠
   const aiResponse = await parseCommand(command);
   console.log('AI understood:', aiResponse);
+  console.log("🔍 Raw aiResponse type:", typeof aiResponse);
+  console.log("🔍 Raw aiResponse:", aiResponse);
+// Parse aiResponse if it's a string
+if (typeof aiResponse === 'string') {
+    try {
+        aiResponse = JSON.parse(aiResponse);
+        console.log("✅ Successfully parsed aiResponse");
+    } catch (error) {
+        console.log("❌ Failed to parse aiResponse:", error);
+    }
+}
   console.log("🔍 About to check for calendar match...");
   // Parse WhatsApp contact command
   const whatsappMatch = command.match(/Add WhatsApp contact:\s*([^,]+),\s*([^,]+),\s*"([^"]+)"/);
