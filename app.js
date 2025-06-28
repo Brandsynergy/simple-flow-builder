@@ -159,12 +159,14 @@ app.post('/api/automation', async (req, res) => {
   console.log("🔍 Raw aiResponse type:", typeof aiResponse);
   console.log("🔍 Raw aiResponse:", aiResponse);
 // Parse aiResponse if it's a string
+let parsedResponse = aiResponse;
 if (typeof aiResponse === 'string') {
     try {
-        aiResponse = JSON.parse(aiResponse);
+        parsedResponse = JSON.parse(aiResponse);
         console.log("✅ Successfully parsed aiResponse");
     } catch (error) {
         console.log("❌ Failed to parse aiResponse:", error);
+        parsedResponse = aiResponse;
     }
 }
   console.log("🔍 About to check for calendar match...");
