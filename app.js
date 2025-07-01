@@ -214,7 +214,7 @@ if (parsedResponse?.actions && parsedResponse.actions.length > 0) {
     if (calendarMatch) {
       console.log("✅ Calendar match found!");
       console.log("📅 Creating calendar event...");
-        const eventTitle = parsedResponse.actions[0].details ||parsedResponse.actions[0].parameters.title || 'New Event';
+      const eventTitle = parsedResponse.trigger || 'New Event';
         
         try {
             const eventDetails = {
