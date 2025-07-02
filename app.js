@@ -193,6 +193,17 @@ if (typeof aiResponse === 'string') {
         console.log('Email execution error:', error);
       }
     }
+
+  // Handle reminder commands
+    if (parsedResponse.actions && parsedResponse.actions[0].action === 'CreateReminder') {
+        const reminderDetails = parsedResponse.actions[0].parameters;
+        return res.json({
+            success: true,
+            message: `✅ Reminder set for ${reminderDetails.about} at ${reminderDetails.time}! You'll get a browser notification 5 minutes before.`,
+            action: 'reminder',
+            details: reminderDetails
+        });
+    }
   // Parse Calendar command 📅
     // console.log("🔍 Checking trigger:", parsedResponse?.trigger);
     // console.log("🔍 Checking actions:", parsedResponse?.actions);
