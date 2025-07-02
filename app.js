@@ -57,7 +57,7 @@ const calendarAuth = new google.auth.GoogleAuth({
   // } catch (error) {
     // console.error('Calendar creation error:', error);
     // throw error;
-  }
+  // }
 // }
 // Smart Command Parser - The Brain! 🧠 (Using GPT-4!)
 async function parseCommand(userCommand) {
