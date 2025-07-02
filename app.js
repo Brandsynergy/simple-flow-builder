@@ -195,7 +195,7 @@ if (typeof aiResponse === 'string') {
     }
 
   // Handle reminder commands
-    if (parsedResponse.actions && (parsedResponse.actions[0].action === 'CreateReminder' || parsedResponse.actions[0].action === 'remind' || parsedResponse.actions[0].action === 'create_reminder' || parsedResponse.actions[0].action === 'set reminder')) {
+    if (parsedResponse.actions && (parsedResponse.actions[0].action === 'CreateReminder' || parsedResponse.actions[0].action === 'remind' || parsedResponse.actions[0].action === 'create_reminder' || parsedResponse.actions[0].action === 'set reminder' || parsedResponse.actions[0].action === 'SetReminder')) {
         const reminderDetails = parsedResponse.actions[0].parameters || parsedResponse.actions[0].details || { about: parsedResponse.actions[0].content, time: parsedResponse.trigger };
         return res.json({
             success: true,
