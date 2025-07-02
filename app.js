@@ -195,8 +195,11 @@ if (typeof aiResponse === 'string') {
     }
 
   // Handle reminder commands
-    if (parsedResponse.actions && (parsedResponse.actions[0].action === 'CreateReminder' || parsedResponse.actions[0].action === 'remind' || parsedResponse.actions[0].action === 'create_reminder' || parsedResponse.actions[0].action === 'set reminder' || parsedResponse.actions[0].action === 'SetReminder')) {
-        const reminderDetails = parsedResponse.actions[0].parameters || parsedResponse.actions[0].details || { about: parsedResponse.actions[0].content, time: parsedResponse.trigger };
+    if (parsedResponse.actions && parsedResponse.actions[0].action.toLowerCase().includes('remind')) {
+        const reminderDetails = parsedResponse.actions[0].parameters || parsedResponse.actions[0].details || { 
+    about: parsedResponse.actions[0].content || parsedResponse.actions[0].eventType || 'reminder', 
+    time: parsedResponse.actions[0].time || parsedResponse.trigger 
+};
         return res.json({
             success: true,
             message: `✅ Reminder set for ${reminderDetails.about} at ${reminderDetails.time}! You'll get a browser notification 5 minutes before.`,
