@@ -230,7 +230,7 @@ if (typeof aiResponse === 'string') {
             // console.error('Calendar error:', error);
             // return res.json({ success: false, message: 'Failed to create calendar event' });
         // }
-    }
+    // }
   if (whatsappMatch) {
     const [, name, phone, message] = whatsappMatch;
     
