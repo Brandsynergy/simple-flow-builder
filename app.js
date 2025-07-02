@@ -32,33 +32,33 @@ const calendarAuth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/calendar']
 });
 // Calendar Event Creation Function
-async function createCalendarEvent(eventDetails) {
-  try {
-    const event = {
-      summary: eventDetails.event,
-      description: eventDetails.description || '',
-      start: {
-        dateTime: eventDetails.startTime,
-        timeZone: 'Europe/London',
-      },
-      end: {
-        dateTime: eventDetails.endTime,
-        timeZone: 'Europe/London',
-      },
-    };
+// async function createCalendarEvent(eventDetails) {
+// try {
+// const event = {
+// summary: eventDetails.event,
+// description: eventDetails.description || '',
+// start: {
+       // dateTime: eventDetails.startTime,
+        // timeZone: 'Europe/London',
+      // },
+      //end: {
+      //  dateTime: eventDetails.endTime,
+     // timeZone: 'Europe/London',
+     // },
+    // };
 
-    const result = await calendar.events.insert({
-      auth: calendarAuth,
-      calendarId: 'primary',
-      resource: event,
-    });
+    //const result = await calendar.events.insert({
+      //auth: calendarAuth,
+      //calendarId: 'primary',
+     // resource: event,
+    // });
 
-    return result.data;
-  } catch (error) {
-    console.error('Calendar creation error:', error);
-    throw error;
+   // return result.data;
+  // } catch (error) {
+    // console.error('Calendar creation error:', error);
+    // throw error;
   }
-}
+// }
 // Smart Command Parser - The Brain! 🧠 (Using GPT-4!)
 async function parseCommand(userCommand) {
   try {
@@ -194,42 +194,42 @@ if (typeof aiResponse === 'string') {
       }
     }
   // Parse Calendar command 📅
-    console.log("🔍 Checking trigger:", parsedResponse?.trigger);
-    console.log("🔍 Checking actions:", parsedResponse?.actions);
-if (parsedResponse?.actions && parsedResponse.actions.length > 0) {
-    console.log("🔍 Checking first action:", parsedResponse.actions[0].action);
-} else {
-    console.log("❌ No actions found or actions is undefined");
-}
-    const calendarMatch = (parsedResponse.actions && parsedResponse.actions.length > 0) && 
-   (parsedResponse.trigger.toLowerCase().includes('meeting') || 
-    parsedResponse.trigger.toLowerCase().includes('appointment') || 
-    parsedResponse.trigger.toLowerCase().includes('schedule') ||
-    parsedResponse.actions[0].action.toLowerCase().includes('event') ||
-    parsedResponse.actions[0].action.toLowerCase().includes('create') ||
-    parsedResponse.actions[0].action.toLowerCase().includes('meeting') ||
-   (parsedResponse.actions[0].parameters && (parsedResponse.actions[0].parameters.date ||parsedResponse.actions[0].parameters.time)) ||
-   (parsedResponse.actions[0].details && (parsedResponse.actions[0].details.date ||parsedResponse.actions[0].details.time)));
+    // console.log("🔍 Checking trigger:", parsedResponse?.trigger);
+    // console.log("🔍 Checking actions:", parsedResponse?.actions);
+// if (parsedResponse?.actions && parsedResponse.actions.length > 0) {
+  //  console.log("🔍 Checking first action:", parsedResponse.actions[0].action);
+// } else {
+    // console.log("❌ No actions found or actions is undefined");
+// }
+    // const calendarMatch = (parsedResponse.actions && parsedResponse.actions.length > 0) && 
+   // (parsedResponse.trigger.toLowerCase().includes('meeting') || 
+    // parsedResponse.trigger.toLowerCase().includes('appointment') || 
+   //  parsedResponse.trigger.toLowerCase().includes('schedule') ||
+   //  parsedResponse.actions[0].action.toLowerCase().includes('event') ||
+  //   parsedResponse.actions[0].action.toLowerCase().includes('create') ||
+ //    parsedResponse.actions[0].action.toLowerCase().includes('meeting') ||
+   // (parsedResponse.actions[0].parameters && (parsedResponse.actions[0].parameters.date ||parsedResponse.actions[0].parameters.time)) ||
+   // (parsedResponse.actions[0].details && (parsedResponse.actions[0].details.date ||parsedResponse.actions[0].details.time)));
     
-    if (calendarMatch) {
-      console.log("✅ Calendar match found!");
-      console.log("📅 Creating calendar event...");
-      const eventTitle = parsedResponse.trigger || 'New Event';
+    //if (calendarMatch) {
+      // console.log("✅ Calendar match found!");
+      // console.log("📅 Creating calendar event...");
+      // const eventTitle = parsedResponse.trigger || 'New Event';
         
-        try {
-            const eventDetails = {
-                title: eventTitle,
-                description: `Created by NLAA: ${command}`,
-                startTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-                endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
-            };
+        // try {
+            // const eventDetails = {
+                // title: eventTitle,
+                // description: `Created by NLAA: ${command}`,
+                // startTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+                // endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+            // };
             
-            await createCalendarEvent(eventDetails);
-            return res.json({ success: true, message: `📅 Calendar event "${eventTitle}" created successfully!` });
-        } catch (error) {
-            console.error('Calendar error:', error);
-            return res.json({ success: false, message: 'Failed to create calendar event' });
-        }
+            // await createCalendarEvent(eventDetails);
+           //  return res.json({ success: true, message: `📅 Calendar event "${eventTitle}" created successfully!` });
+        // } catch (error) {
+            // console.error('Calendar error:', error);
+            // return res.json({ success: false, message: 'Failed to create calendar event' });
+        // }
     }
   if (whatsappMatch) {
     const [, name, phone, message] = whatsappMatch;
