@@ -211,6 +211,31 @@ if ('Notification' in window) {
             const command = element.querySelector('code').textContent;
             document.getElementById('commandInput').value = command;
         }
+        // Function to show browser notification
+function showNotification(title, message, delay = 0) {
+    setTimeout(() => {
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification(title, {
+                body: message,
+                icon: '🔔'
+            });
+        }
+    }, delay);
+}
+
+// Function to schedule reminder
+function scheduleReminder(eventTitle, eventTime, reminderMinutes = 5) {
+    const now = new Date();
+    const eventDate = new Date(eventTime);
+    const reminderTime = new Date(eventDate.getTime() - (reminderMinutes * 60 * 1000));
+    
+    if (reminderTime > now) {
+        const delay = reminderTime.getTime() - now.getTime();
+        showNotification('NLAA Reminder', `${eventTitle} in ${reminderMinutes} minutes!`, delay);
+        return true;
+    }
+    return false;
+}
         
         async function runAutomation() {
             const command = document.getElementById('commandInput').value;
@@ -233,6 +258,24 @@ if ('Notification' in window) {
                 
                 const data = await response.json();
                 resultDiv.innerHTML = `<pre>${data.message}</pre>`;
+
+                // Check for reminder commands
+            if (command.toLowerCase().includes('remind me') || command.toLowerCase().includes('reminder')) {
+                // Extract time and event details from the command
+                const timeMatch = command.match(/(\d{1,2}:\d{2}|\d{1,2}pm|\d{1,2}am)/i);
+                const eventMatch = command.match(/remind me about (.+?) (?:at|in)/i);
+                
+                if (timeMatch && eventMatch) {
+                    const eventTitle = eventMatch[1];
+                    const eventTime = timeMatch[0];
+                    
+                    // Schedule the reminder (5 minutes before)
+                    const success = scheduleReminder(eventTitle, eventTime);
+                    if (success) {
+                        resultDiv.innerHTML += '<br><strong>✅ Reminder set! You\'ll get a notification 5 minutes before.</strong>';
+                    }
+                }
+            }
             } catch (error) {
                 resultDiv.innerHTML = `<pre>❌ Error: ${error.message}</pre>`;
             }
