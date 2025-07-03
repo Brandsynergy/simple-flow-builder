@@ -104,6 +104,84 @@ async function sendEmail(to, subject, message) {
     return 'Failed to send email';
   }
 }
+
+// Dual notification scheduler
+function scheduleReminderNotifications(message, timeString) {
+    try {
+        // Parse time
+        const now = new Date();
+        const reminderTime = parseTimeString(timeString);
+        const notificationTime = new Date(reminderTime.getTime() - 5 * 60000); // 5 minutes before
+        
+        const delay = notificationTime.getTime() - now.getTime();
+        
+        if (delay > 0) {
+            setTimeout(() => {
+                // Send email reminder
+                sendReminderEmail(message);
+                
+                // Send WhatsApp reminder (we'll add this next)
+                // sendWhatsAppReminder(message);
+                
+                console.log(`📧 Email reminder sent for: ${message}`);
+            }, delay);
+            
+            console.log(`⏰ Dual reminder scheduled for ${notificationTime.toLocaleString()}`);
+        } else {
+            console.log('⚠️ Reminder time has already passed');
+        }
+    } catch (error) {
+        console.error('❌ Error scheduling reminder:', error);
+    }
+}
+
+// Parse time string helper
+function parseTimeString(timeString) {
+    const now = new Date();
+    const timeMatch = timeString.match(/(\d+)[:.:]?(\d*)\s*(am|pm)?/i);
+    
+    if (timeMatch) {
+        let hours = parseInt(timeMatch[1]);
+        let minutes = parseInt(timeMatch[2]) || 0;
+        const period = timeMatch[3]?.toLowerCase();
+        
+        if (period === 'pm' && hours !== 12) hours += 12;
+        if (period === 'am' && hours === 12) hours = 0;
+        
+        const reminderTime = new Date();
+        reminderTime.setHours(hours, minutes, 0, 0);
+        
+        // If time has passed today, schedule for tomorrow
+        if (reminderTime <= now) {
+            reminderTime.setDate(reminderTime.getDate() + 1);
+        }
+        
+        return reminderTime;
+    }
+    
+    throw new Error('Invalid time format');
+}
+
+// Email reminder function
+async function sendReminderEmail(message) {
+    try {
+        await emailTransporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER, // Send to yourself
+            subject: '🔔 NLAA Reminder Alert',
+            html: `
+                <h2>🔔 Reminder Alert</h2>
+                <p><strong>${message}</strong> in 5 minutes!</p>
+                <p>This is your automated reminder from NLAA.</p>
+                <hr>
+                <small>Sent by your Natural Language Automation App</small>
+            `
+        });
+        console.log('📧 Reminder email sent successfully');
+    } catch (error) {
+        console.error('❌ Error sending reminder email:', error);
+    }
+}
 const app = express();
 const PORT = process.env.PORT || 10000;
 
