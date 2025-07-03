@@ -38,5 +38,59 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+// Magic Notification Code
+function scheduleNotification(message, timeString) {
+    // Ask for permission first
+    if (Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+    
+    // Calculate time until notification
+    const now = new Date();
+    const [time, period] = timeString.toLowerCase().split(/\s*(am|pm)\s*/);
+    let [hours, minutes] = time.split(/[:.]/);
+    hours = parseInt(hours);
+    minutes = parseInt(minutes) || 0;
+    
+    if (period === 'pm' && hours !== 12) hours += 12;
+    if (period === 'am' && hours === 12) hours = 0;
+    
+    const notificationTime = new Date();
+    notificationTime.setHours(hours, minutes - 5, 0, 0); // 5 minutes before
+    
+    const delay = notificationTime.getTime() - now.getTime();
+    
+    if (delay > 0) {
+        setTimeout(() => {
+            if (Notification.permission === 'granted') {
+                new Notification('NLAA Reminder', {
+                    body: message + ' in 5 minutes!',
+                    icon: '🔔'
+                });
+            }
+        }, delay);
+    }
+}
+
+// Listen for reminder responses
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            setTimeout(() => {
+                const response = document.querySelector('#response');
+                if (response && response.textContent.includes('Reminder set')) {
+                    const text = response.textContent;
+                    const timeMatch = text.match(/at (\d+[:.]\d+\s*[ap]m)/i);
+                    if (timeMatch) {
+                        scheduleNotification('Reminder', timeMatch[1]);
+                    }
+                }
+            }, 2000);
+        });
+    }
+});
+</script>
 </body>
 </html>
