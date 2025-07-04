@@ -275,7 +275,7 @@ if (typeof aiResponse === 'string') {
 // Handle reminders with dual notifications (Email + WhatsApp)
 if (parsedResponse.actions && parsedResponse.actions[0].action.toLowerCase().includes('remind')) {
     const reminderDetails = {
-    about: parsedResponse.actions[0].parameters?.text || parsedResponse.actions[0].content || parsedResponse.actions[0].subject || parsedResponse.actions[0].message || parsedResponse.actions[0].eventType || 'reminder',
+    about: parsedResponse.actions[0].parameters?.text || parsedResponse.actions[0].detail || parsedResponse.actions[0].content || parsedResponse.actions[0].subject || parsedResponse.actions[0].message || parsedResponse.actions[0].eventType || 'reminder',
     time: parsedResponse.actions[0].time || parsedResponse.trigger
 };
     
